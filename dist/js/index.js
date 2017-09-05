@@ -1,1 +1,1 @@
-"use strict";function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}console.log("hellokitty");var _jquery=require("jquery"),_jquery2=_interopRequireDefault(_jquery);(0,_jquery2.default)(".a").append("<p>haha</p>");
+"use strict";function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}console.log("hellokitt");var _jquery=require("jquery"),_jquery2=_interopRequireDefault(_jquery);(0,_jquery2.default)(".a").append("<p>haha</p>");
