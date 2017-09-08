@@ -85,7 +85,10 @@ gulp.task('htmlmin', function () {
         .pipe(htmlmin(options))
         .pipe(gulp.dest('dist'));
 });
-
+gulp.task('html-watch', ['htmlmin'], function() {
+    reload();
+});
+// gulp.task('html-watch', ['htmlmin'], reload);
 //压缩图片
 gulp.task('imagemin', function() {
     return gulp.src('src/images/*')
@@ -101,8 +104,9 @@ gulp.task('serve', ['sass'], function () {
     });
     //监视文件变化,自动执行
     gulp.watch("src/css/*.scss", ['sass']);
-    gulp.watch("./src/*.html").on('change', reload);
+    gulp.watch("./src/pages/*.html", ['html-watch']);
     gulp.watch('src/js/*.js', ['js-watch' ]);
+    gulp.watch('src/images/*', ['imagemin']);
 });
 
 // 代理
