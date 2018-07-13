@@ -16,9 +16,9 @@ const imagemin = require('gulp-imagemin');
 const clean = require('gulp-clean');
 
 //清除dist
-gulp.task('clean', function() {
+gulp.task('clean', function () {
     return gulp.src('dist')
-    .pipe(clean())
+        .pipe(clean())
 })
 
 //编译且处理完js文件后返回流
@@ -61,9 +61,14 @@ gulp.task('js-watch', ['scripts', 'browserify'], reload);
 // scss编译后的css将注入到浏览器里实现更新
 gulp.task('sass', function () {
     return gulp.src("src/css/*.scss")
-        .pipe(sass({sourcemap: true}))
+        .pipe(sass({ sourcemap: true }))
         .pipe(cssnano())
-        .pipe(concat('index.min.css'))  
+        // .pipe(concat('index.min.css')) 
+        .pipe(rename(
+            function (path) {
+                path.basename += '.min'
+            }
+        ))
         .pipe(gulp.dest("dist/css"))
         .pipe(filter('**/*.css'))
         .pipe(reload({ stream: true }));
@@ -85,15 +90,15 @@ gulp.task('htmlmin', function () {
         .pipe(htmlmin(options))
         .pipe(gulp.dest('dist'));
 });
-gulp.task('html-watch', ['htmlmin'], function() {
+gulp.task('html-watch', ['htmlmin'], function () {
     reload();
 });
 // gulp.task('html-watch', ['htmlmin'], reload);
 //压缩图片
-gulp.task('imagemin', function() {
+gulp.task('imagemin', function () {
     return gulp.src('src/images/*')
-    .pipe(imagemin())
-    .pipe(gulp.dest('dist/images'))
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist/images'))
 })
 
 
@@ -105,7 +110,7 @@ gulp.task('serve', ['sass'], function () {
     //监视文件变化,自动执行
     gulp.watch("src/css/*.scss", ['sass']);
     gulp.watch("./src/pages/*.html", ['html-watch']);
-    gulp.watch('src/js/*.js', ['js-watch' ]);
+    gulp.watch('src/js/*.js', ['js-watch']);
     gulp.watch('src/images/*', ['imagemin']);
 });
 
@@ -116,5 +121,7 @@ gulp.task('browser-sync', function () {
     });
 });
 
-
-gulp.task('start', ['htmlmin','imagemin', 'scripts', 'browserify',  'serve']);
+gulp.task('default', ['clean'], function () {
+    gulp.start('htmlmin', 'imagemin', 'scripts', 'browserify', 'serve');
+})
+// gulp.task('start', ['htmlmin','imagemin', 'scripts', 'browserify',  'serve']);
